@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Dev Starter Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0c0e14;--surface:#13151f;--surface2:#1a1d2a;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+    --text:#e8eaf0;--text2:#8b8fa8;--text3:#575b70;
+    --accent:#5be8c8;--accent-dim:rgba(91,232,200,0.12);--accent-border:rgba(91,232,200,0.25);
+    --purple:#9b7ff4;--purple-dim:rgba(155,127,244,0.12);
+    --amber:#f5c542;--amber-dim:rgba(245,197,66,0.12);
+    --coral:#ff7e5f;--coral-dim:rgba(255,126,95,0.12);
+    --blue:#5b9cf4;--blue-dim:rgba(91,156,244,0.12);
+    --green:#5be87a;--green-dim:rgba(91,232,122,0.10);
+    --red:#ff5f57;--red-dim:rgba(255,95,87,0.12);
+    --radius:10px;--radius-sm:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-size:16px;line-height:1.6;}
+  .page{max-width:820px;margin:0 auto;padding:48px 24px 80px;}
+  .hero{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+  .hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--accent);display:inline-block;border-radius:2px;}
+  .hero h1{font-size:40px;font-weight:700;line-height:1.15;margin-bottom:16px;letter-spacing:-.02em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-desc{font-size:16px;color:var(--text2);line-height:1.7;max-width:600px;}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .tag{font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);}
+  .banner{border-radius:var(--radius);padding:18px 20px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start;}
+  .banner-icon{font-size:20px;flex-shrink:0;line-height:1;margin-top:2px;}
+  .banner-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+  .banner-text{font-size:14px;line-height:1.6;}
+  .banner-text a{text-decoration:none;border-bottom:1px solid currentColor;}
+  .banner-money{background:var(--amber-dim);border:1px solid rgba(245,197,66,.25);}
+  .banner-money .banner-title{color:var(--amber);}
+  .banner-money .banner-text{color:#d4b04a;}
+  .banner-money a{color:var(--amber);}
+  .banner-safety{background:var(--coral-dim);border:1px solid rgba(255,126,95,.25);}
+  .banner-safety .banner-title{color:var(--coral);}
+  .banner-safety .banner-text{color:#e09070;}
+  .banner-info{background:var(--accent-dim);border:1px solid var(--accent-border);}
+  .banner-info .banner-title{color:var(--accent);}
+  .banner-info .banner-text{color:#7eccb8;}
+  .banner-age{background:var(--red-dim);border:1px solid rgba(255,95,87,.25);}
+  .banner-age .banner-title{color:var(--red);}
+  .banner-age .banner-text{color:#d48880;}
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:48px;}
+  .toc-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;}
+  .toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;}
+  .toc-list li a{font-size:14px;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:8px;padding:4px 0;transition:color .15s;}
+  .toc-list li a:hover{color:var(--accent);}
+  .toc-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);min-width:20px;}
+  .section{margin-bottom:64px;scroll-margin-top:24px;}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-border);padding:4px 10px;border-radius:var(--radius-sm);font-weight:500;}
+  .section h2{font-size:22px;font-weight:600;letter-spacing:-.01em;}
+  .section h3{font-size:18px;font-weight:600;margin:28px 0 14px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:10px;transition:border-color .15s;}
+  .card:hover{border-color:var(--border2);}
+  .card-row{display:flex;gap:14px;align-items:flex-start;}
+  .card-icon{width:38px;height:38px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .card-content{flex:1;}
+  .card-title{font-size:15px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .card-body{font-size:14px;color:var(--text2);line-height:1.6;}
+  .card-body a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-border);}
+  .card-body a:hover{border-color:var(--accent);}
+  .card-body code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:var(--surface2);padding:1px 5px;border-radius:3px;}
+  .badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;letter-spacing:.02em;}
+  .badge-free{background:var(--green-dim);color:var(--green);border:1px solid rgba(91,232,122,.2);}
+  .badge-paid{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(91,156,244,.2);}
+  .badge-key{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(155,127,244,.2);}
+  .badge-18{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,95,87,.3);}
+  .ic-teal{background:var(--accent-dim);color:var(--accent);}
+  .ic-purple{background:var(--purple-dim);color:var(--purple);}
+  .ic-amber{background:var(--amber-dim);color:var(--amber);}
+  .ic-coral{background:var(--coral-dim);color:var(--coral);}
+  .ic-blue{background:var(--blue-dim);color:var(--blue);}
+  .ic-green{background:var(--green-dim);color:var(--green);}
+  .ic-red{background:var(--red-dim);color:var(--red);}
+  hr{border:none;border-top:1px solid var(--border);margin:32px 0;}
+  .tip{border-left:3px solid var(--accent);background:var(--accent-dim);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:14px 0;}
+  .tip-head{font-size:14px;font-weight:600;color:var(--accent);margin-bottom:4px;}
+  .tip-body{font-size:14px;color:#9ee8d8;line-height:1.6;}
+  .tip-purple{border-left-color:var(--purple);background:var(--purple-dim);}
+  .tip-purple .tip-head{color:var(--purple);}
+  .tip-purple .tip-body{color:#c4b0f7;}
+  .tip-amber{border-left-color:var(--amber);background:var(--amber-dim);}
+  .tip-amber .tip-head{color:var(--amber);}
+  .tip-amber .tip-body{color:#d4b04a;}
+  .prompt-label{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;margin-top:12px;}
+  .prompt-box{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+  .prompt-box .ph{color:var(--accent);font-style:italic;}
+  .copy-btn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 12px;font-size:12px;font-family:'Outfit',sans-serif;font-weight:500;background:transparent;border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text2);cursor:pointer;transition:all .15s;}
+  .copy-btn:hover{background:var(--surface2);color:var(--text);}
+  .copy-btn.copied{color:var(--green);border-color:rgba(91,232,122,.3);}
+  .step-list{display:flex;flex-direction:column;gap:20px;}
+  .step-item{display:flex;gap:16px;}
+  .step-num-wrap{display:flex;flex-direction:column;align-items:center;}
+  .step-circle{width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--accent-border);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-line{width:1px;flex:1;background:var(--border);margin-top:4px;min-height:16px;}
+  .step-body{flex:1;padding-bottom:4px;}
+  .step-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .step-desc{font-size:14px;color:var(--text2);line-height:1.6;}
+  .prompt-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+  .prompt-toggle{width:100%;text-align:left;padding:16px 20px;background:transparent;border:none;color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .prompt-toggle:hover{background:var(--surface2);}
+  .toggle-left{display:flex;align-items:center;gap:12px;}
+  .toggle-icon{width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .toggle-arrow{font-size:12px;color:var(--text3);transition:transform .2s;}
+  .prompt-toggle.open .toggle-arrow{transform:rotate(90deg);}
+  .prompt-content{padding:0 20px 20px;display:none;}
+  .prompt-content.open{display:block;}
+  .prompt-meta{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+  .convo{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;display:flex;flex-direction:column;gap:12px;margin-top:14px;}
+  .msg{display:flex;gap:10px;}
+  .msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+  .msg-avatar.user{background:var(--purple-dim);color:var(--purple);}
+  .msg-avatar.claude{background:var(--accent-dim);color:var(--accent);font-size:10px;}
+  .msg-bubble{flex:1;font-size:13px;line-height:1.6;border-radius:8px;padding:10px 13px;}
+  .msg-bubble.user{background:var(--purple-dim);color:#c4b0f7;}
+  .msg-bubble.claude{background:var(--surface);color:var(--text2);}
+  .msg-code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg);border-radius:4px;padding:8px 10px;margin-top:6px;color:var(--accent);white-space:pre-wrap;}
+  .godot-diagram{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+  .godot-diagram-title{font-size:13px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+  .editor-mockup{background:#1a1c24;border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden;}
+  .editor-titlebar{background:#12141c;border-bottom:1px solid rgba(255,255,255,.08);padding:8px 14px;display:flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+  .editor-title{font-size:12px;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace;margin-left:8px;}
+  .editor-body{display:grid;grid-template-columns:190px 1fr 190px;grid-template-rows:36px 1fr 110px;min-height:290px;}
+  .ed-toolbar{grid-column:1/-1;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:4px;padding:0 10px;}
+  .ed-tab{font-size:11px;font-family:'Outfit',sans-serif;padding:4px 12px;border-radius:4px;color:rgba(255,255,255,.3);cursor:pointer;border:none;background:transparent;}
+  .ed-tab.active{background:rgba(91,232,200,.15);color:var(--accent);}
+  .ed-scene{grid-column:1;grid-row:2;border-right:1px solid rgba(255,255,255,.06);padding:10px;}
+  .ed-section-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .panel-dot{width:6px;height:6px;border-radius:50%;}
+  .ed-node{font-size:11px;font-family:'JetBrains Mono',monospace;padding:3px 6px;border-radius:3px;margin-bottom:2px;display:flex;align-items:center;gap:5px;}
+  .ed-node.selected{background:rgba(91,232,200,.12);color:var(--accent);}
+  .ed-node.child{margin-left:14px;color:rgba(255,255,255,.4);}
+  .ed-viewport{grid-column:2;grid-row:2;background:#252836;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .ed-vp-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px;}
+  .ed-player{position:absolute;width:26px;height:32px;background:var(--accent);border-radius:4px 4px 2px 2px;opacity:.7;}
+  .ed-inspector{grid-column:3;grid-row:2;border-left:1px solid rgba(255,255,255,.06);padding:10px;}
+  .ed-prop-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .ed-prop-name{font-size:10px;color:rgba(255,255,255,.35);font-family:'JetBrains Mono',monospace;}
+  .ed-prop-val{font-size:10px;color:var(--accent);font-family:'JetBrains Mono',monospace;}
+  .ed-filesystem{grid-column:1;grid-row:3;border-right:1px solid rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.06);padding:8px 10px;}
+  .ed-file{font-size:10px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.3);padding:2px 0;display:flex;gap:5px;align-items:center;}
+  .ed-file.folder{color:var(--amber);opacity:.8;}
+  .ed-output{grid-column:2/-1;grid-row:3;border-top:1px solid rgba(255,255,255,.06);padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.25);line-height:1.6;}
+  .ed-output .ok{color:var(--green);}
+  .ed-output .err{color:var(--coral);}
+  .callout-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+  .callout-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;gap:10px;}
+  .callout-letter{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+  .callout-text{font-size:13px;color:var(--text2);line-height:1.5;}
+  .callout-text strong{color:var(--text);font-weight:600;}
+  .path-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .path-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;}
+  .path-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .path-card.p1::before{background:var(--accent);}
+  .path-card.p2::before{background:var(--purple);}
+  .path-card.p3::before{background:var(--coral);}
+  .path-phase{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+  .p1 .path-phase{color:var(--accent);}.p2 .path-phase{color:var(--purple);}.p3 .path-phase{color:var(--coral);}
+  .path-title{font-size:16px;font-weight:600;margin-bottom:10px;}
+  .path-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .path-list li{font-size:13px;color:var(--text2);display:flex;gap:7px;}
+  .path-list li::before{content:'→';color:var(--text3);flex-shrink:0;}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+  .proj-emoji{font-size:24px;margin-bottom:8px;display:block;}
+  .proj-name{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .proj-why{font-size:13px;color:var(--text2);line-height:1.5;}
+  .proj-skill{margin-top:8px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;}
+  .proj-skill span{background:var(--surface2);border-radius:4px;padding:2px 7px;margin-left:4px;color:var(--text2);}
+  .check-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .check-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--text2);line-height:1.5;}
+  .check-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;}
+  .check-list li.warn::before{content:'⚠';color:var(--amber);}
+  .check-list li.block::before{content:'✗';color:var(--coral);}
+  .check-list a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-border);}
+  .resource-link{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text);margin-bottom:8px;transition:all .15s;}
+  .resource-link:hover{border-color:var(--border2);background:var(--surface2);}
+  .resource-link:hover .rl-arrow{transform:translateX(3px);}
+  .rl-icon{width:38px;height:38px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .rl-content{flex:1;}
+  .rl-name{font-size:15px;font-weight:600;}
+  .rl-desc{font-size:13px;color:var(--text2);}
+  .rl-arrow{color:var(--text3);transition:transform .15s;}
+  .footer{border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text3);font-size:13px;}
+  .footer a{color:var(--accent);text-decoration:none;}
+  @media(max-width:600px){
+    .hero h1{font-size:28px;}
+    .toc-list,.callout-grid,.path-grid,.proj-grid{grid-template-columns:1fr;}
+    .editor-body{grid-template-columns:140px 1fr;}
+    .ed-inspector{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hero">
+  <div class="hero-eyebrow">Complete beginner guide</div>
+  <h1>Build your first<br><em>video game</em> with code</h1>
+  <p class="hero-desc">Everything you need to go from zero to a real playable game — what to install, how the tools work, how to use Claude as your AI coding partner, and how to stay safe online while doing it.</p>
+  <div class="hero-tags">
+    <span class="tag">Godot Engine 4</span>
+    <span class="tag">GDScript</span>
+    <span class="tag">VS Code</span>
+    <span class="tag">Claude (supervised)</span>
+    <span class="tag">Beginner-friendly</span>
+  </div>
+</div>
+
+<div style="margin-bottom:32px;">
+  <div class="banner banner-money">
+    <div class="banner-icon">💵</div>
+    <div class="banner-body">
+      <div class="banner-title">Money check-in boxes — stop and ask your aunt first</div>
+      <div class="banner-text">Any time you see a yellow box like this, something costs real money. Don't sign up, buy, or subscribe to anything without checking with your aunt first. She's covering the costs and needs to approve each one.</div>
+    </div>
+  </div>
+  <div class="banner banner-safety">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">Safety reminder boxes — read these carefully</div>
+      <div class="banner-text">Orange boxes like this one contain safety and security tips. Game dev involves a lot of online activity — communities, downloads, publishing games. These tips keep you protected.</div>
+    </div>
+  </div>
+</div>
+
+<div class="toc">
+  <div class="toc-title">What's in this guide</div>
+  <ul class="toc-list">
+    <li><a href="#safety-overview"><span class="toc-num">00</span> Online safety overview</a></li>
+    <li><a href="#install"><span class="toc-num">01</span> What to install</a></li>
+    <li><a href="#claude"><span class="toc-num">02</span> Claude — how your account works</a></li>
+    <li><a href="#first-convo"><span class="toc-num">03</span> Your first conversation with Claude</a></li>
+    <li><a href="#godot"><span class="toc-num">04</span> How Godot's interface works</a></li>
+    <li><a href="#path"><span class="toc-num">05</span> Learning path</a></li>
+    <li><a href="#projects"><span class="toc-num">06</span> First projects to build</a></li>
+    <li><a href="#resources"><span class="toc-num">07</span> Free learning resources</a></li>
+  </ul>
+</div>
+
+
+<!-- SECTION 00 -->
+<div class="section" id="safety-overview">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <h2>Online safety overview</h2>
+  </div>
+
+  <p style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:20px;">Game development involves a lot of online activity — downloading software, joining communities, publishing your games, asking for help. Most of it is totally fine. Here's what to watch out for.</p>
+
+  <h3>Protecting your personal information</h3>
+  <ul class="check-list">
+    <li>Use a username or alias everywhere — GitHub, itch.io, Reddit, Discord. Your real name doesn't need to be public anywhere.</li>
+    <li>Don't put your age, school, city, or any personal details in public profile bios or game descriptions.</li>
+    <li>Your itch.io page (where you'll eventually publish games) is visible to the whole internet. Keep your profile minimal: alias, what games you make, nothing else.</li>
+    <li>If someone in a game dev community asks where you live, how old you are, or wants to move the conversation somewhere private — don't. Block and move on.</li>
+    <li class="warn">Game dev communities are generally very friendly. The same internet safety rules apply everywhere, though: you don't actually know who anyone is online.</li>
+  </ul>
+
+  <h3>Downloading software safely</h3>
+  <ul class="check-list">
+    <li>Only download Godot from <a href="https://godotengine.org" target="_blank">godotengine.org</a> directly. Search results sometimes show ads for fake lookalike sites at the very top.</li>
+    <li>Only download VS Code from <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> directly.</li>
+    <li>Extensions inside VS Code are safe — only install them from VS Code's built-in Extensions panel, not from random websites.</li>
+    <li class="block">Never download "cracked" or "free premium" versions of any software. They almost always contain malware. Every tool in this guide is genuinely free — you don't need cracked anything.</li>
+    <li class="block">If someone on Discord or Reddit DMs you with a link to "free game assets" or "a better version of Godot," don't click it. These are almost always phishing or malware.</li>
+    <li class="warn">When in doubt about any download, ask your aunt before clicking. It takes 30 seconds and can save a lot of headaches.</li>
+  </ul>
+
+  <h3>Using free game assets (art, music, sounds)</h3>
+  <ul class="check-list">
+    <li>Free assets still have licenses. Most let you use them freely — some ask for credit. Read the license before using anything.</li>
+    <li>Stick to reputable free asset sites: <a href="https://kenney.nl" target="_blank">Kenney.nl</a> (CC0 — no restrictions at all), <a href="https://opengameart.org" target="_blank">OpenGameArt.org</a> (read each license), <a href="https://freesound.org" target="_blank">Freesound.org</a> (sound effects).</li>
+    <li class="block">Don't use assets ripped from commercial games (Mario sprites, Zelda music) in anything you publish online. That's copyright infringement.</li>
+    <li class="block">Don't use random images from Google Images in your games. Most of those are copyrighted.</li>
+  </ul>
+
+  <h3>Accounts and passwords</h3>
+  <ul class="check-list">
+    <li>Use a different password for each account (GitHub, itch.io, etc.). A free password manager like <a href="https://bitwarden.com" target="_blank">Bitwarden</a> makes this easy.</li>
+    <li>Turn on two-factor authentication (2FA) on any account that offers it — especially GitHub. It's a free extra layer of security.</li>
+    <li>Your GitHub account contains all your game code. Treat its password like it matters.</li>
+    <li class="warn">If you ever get an email saying your account was hacked or asking you to "verify your credentials," don't click any links in it. Go to the site directly by typing the URL yourself.</li>
+  </ul>
+
+  <div class="banner banner-safety" style="margin-top:18px;">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">One rule that covers almost everything</div>
+      <div class="banner-text">If something feels off, weird, or too good to be true — it probably is. Free premium software, unsolicited DMs with helpful links, strangers weirdly interested in you personally. Trust that feeling. Close the tab, and ask your aunt if you're unsure.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 01 -->
+<div class="section" id="install">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>What to install</h2>
+  </div>
+
+  <div class="tip">
+    <div class="tip-head">Install in this order</div>
+    <div class="tip-body">Godot first, then VS Code + the godot-tools extension, then Python if you want it. Git last, once you have something worth saving. Everything below is free.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-teal">🎮</div>
+      <div class="card-content">
+        <div class="card-title">Godot Engine 4 <span class="badge badge-free">Free forever</span></div>
+        <div class="card-body">The game engine you'll build everything in. Free, open source, beginner-friendly. Download only from <a href="https://godotengine.org" target="_blank">godotengine.org</a> — click Download and grab the <strong>Standard version</strong> (ignore the one that says ".NET", that's for a different coding language you don't need yet). Just unzip the file and run it — no installer needed. No account required.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner banner-safety">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">Safe Godot download checklist</div>
+      <div class="banner-text">Before downloading, confirm the URL bar says exactly <strong>godotengine.org</strong>. Search engine ads sometimes show fake sites at the top of results — scroll past them. The file should be a <code style="font-family:'JetBrains Mono',monospace;">.zip</code> or <code style="font-family:'JetBrains Mono',monospace;">.exe</code> from the official site only.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-blue">💻</div>
+      <div class="card-content">
+        <div class="card-title">VS Code <span class="badge badge-free">Free</span></div>
+        <div class="card-body">Best code editor to use alongside Godot. Download only from <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a>. After installing: open VS Code → click the Extensions icon (four squares in left sidebar) → search <strong>godot-tools</strong> → Install. This makes VS Code understand GDScript.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-purple">🐍</div>
+      <div class="card-content">
+        <div class="card-title">Python 3 <span class="badge badge-free">Optional</span></div>
+        <div class="card-body">Good for quick text experiments before you're deep in Godot. Download only from <a href="https://python.org" target="_blank">python.org</a> — click the big yellow "Download Python" button for the latest version. On Windows, during the install there's a checkbox at the bottom that says <strong>"Add Python to PATH"</strong> — make sure that is checked before clicking Install, otherwise Python won't work properly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-amber">📦</div>
+      <div class="card-content">
+        <div class="card-title">Git + GitHub account <span class="badge badge-free">Free</span></div>
+        <div class="card-body">Saves your game's history so you can never permanently break something. Create a free account at <a href="https://github.com" target="_blank">github.com</a>, then download <a href="https://desktop.github.com" target="_blank">GitHub Desktop</a> — it's a visual app that lets you save and sync your game projects with clicks instead of typing commands. Much friendlier than the command line version.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner banner-safety">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">Setting up your GitHub profile safely</div>
+      <div class="banner-text">When creating your GitHub account: use an alias as your username, not your real name. Don't add your school, city, or age to your profile. Your code repositories are public by default — that's normal and fine, just don't put personal info in your code comments or readme files.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 02 -->
+<div class="section" id="claude">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Claude — how your account works</h2>
+  </div>
+
+  <div class="banner banner-age">
+    <div class="banner-icon">⚠️</div>
+    <div class="banner-body">
+      <div class="banner-title">Important: Claude requires users to be 18 or older</div>
+      <div class="banner-text">Anthropic's official minimum age for a Claude.ai account is 18. There is no family plan, no sub-account, and no custodial option. This means <strong>your aunt owns and controls the account</strong>, and you use it with her knowledge. Do not create your own Claude account — it would violate the terms of service. This setup is intentional: your aunt stays involved and can see what's happening.</div>
+    </div>
+  </div>
+
+  <div class="banner banner-money">
+    <div class="banner-icon">💵</div>
+    <div class="banner-body">
+      <div class="banner-title">Money check-in — Claude Pro is $20/month</div>
+      <div class="banner-text">Your aunt is paying for this. Don't sign up for anything yourself. If you ever see a page asking you to upgrade, subscribe, or enter payment info — stop and tell your aunt. The account is at <a href="https://claude.ai" target="_blank">claude.ai</a>.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-teal">✦</div>
+      <div class="card-content">
+        <div class="card-title">What Claude Pro gives you <span class="badge badge-paid">Aunt's account</span></div>
+        <div class="card-body">Much more usage than the free tier, the most capable models, and Projects — which lets Claude remember context across conversations in a game project. You'll use it at <a href="https://claude.ai" target="_blank">claude.ai</a> in a browser. No download needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-purple">📁</div>
+      <div class="card-content">
+        <div class="card-title">Create a Project for each game <span class="badge badge-key">Most important step</span></div>
+        <div class="card-body">On the claude.ai sidebar, click <strong>New Project</strong>. Name it after your game. Use this project for all conversations about that game. Claude will remember your mechanics, bugs fixed, and variable names across every session — way better than starting fresh each time.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon ic-amber">📌</div>
+      <div class="card-content">
+        <div class="card-title">Add a project description</div>
+        <div class="card-body">Inside your project, write a short description. Something like: <em>"I'm building a 2D top-down dungeon crawler in Godot 4 using GDScript. I'm a beginner. Player uses WASD to move, has 3 health points, can shoot bullets. Enemies chase the player."</em> Claude uses this for every conversation in the project.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner banner-safety">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">How Claude handles your conversations</div>
+      <div class="banner-text">Conversations on Claude.ai may be used by Anthropic to improve the AI, and are stored for a period of time. Don't paste passwords, personal details, API keys, or anything sensitive into Claude. Your aunt can see the account's conversations — that's normal and expected. Claude is a coding tool, not a private diary.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 03 -->
+<div class="section" id="first-convo">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Your first conversation with Claude</h2>
+  </div>
+
+  <div class="tip tip-purple">
+    <div class="tip-head">The key mindset shift</div>
+    <div class="tip-body">Claude isn't a search engine — you're working through problems together. The more you explain what you're trying to do and what you've already tried, the better the help you get. Treat it like explaining your code to a smart friend who can write code back.</div>
+  </div>
+
+  <p style="font-size:15px;color:var(--text2);line-height:1.7;margin:18px 0 20px;">Below are the six most useful conversation types for game dev. Click each one to see an example prompt you can copy and use directly.</p>
+
+  <div class="prompt-section">
+    <button class="prompt-toggle" onclick="togglePrompt(this)">
+      <span class="toggle-left"><span class="toggle-icon ic-teal">🧱</span>Starting a new game from scratch</span>
+      <span class="toggle-arrow">▶</span>
+    </button>
+    <div class="prompt-content">
+      <div class="prompt-meta">Give Claude the genre, mechanics, and your skill level. Ask for a plan and explanation before any code — you'll understand what you're building and catch misunderstandings early.</div>
+      <div class="prompt-label">Prompt to use</div>
+      <div class="prompt-box">I want to make a top-down shooter in Godot 4. The player looks at the mouse cursor and shoots bullets toward it. Enemies spawn from the edges of the screen and walk toward the player. When a bullet hits an enemy, it disappears and the enemy takes damage.
+
+I'm a complete beginner — I've watched a couple Godot tutorials but haven't finished a game yet.
+
+Can you:
+1. Tell me what scenes and nodes I'll need
+2. Give me the player movement and aiming code first
+3. Explain what each line does as you write it</div>
+      <button class="copy-btn" onclick="copyText(this)">📋 Copy prompt</button>
+      <div class="prompt-label">What good output looks like</div>
+      <div class="convo">
+        <div class="msg"><div class="msg-avatar claude">C</div><div class="msg-bubble claude">Great starting point! Here's the scene structure you'll need:<br><br><strong>Player scene:</strong> CharacterBody2D → Sprite2D + CollisionShape2D<br><strong>Bullet scene:</strong> Area2D → Sprite2D + CollisionShape2D<br><strong>Enemy scene:</strong> CharacterBody2D → Sprite2D + CollisionShape2D<br><br>Let's start with player movement. Here's the code with each line explained:<div class="msg-code">extends CharacterBody2D
+
+# How fast the player moves in pixels per second
+const SPEED = 200.0
+
+func _physics_process(delta):
+    # Read keyboard input as a direction vector (-1 to 1)
+    var direction = Input.get_vector(
+        "ui_left", "ui_right", "ui_up", "ui_down"
+    )
+    velocity = direction * SPEED
+    move_and_slide()  # moves and handles wall collisions</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <button class="prompt-toggle" onclick="togglePrompt(this)">
+      <span class="toggle-left"><span class="toggle-icon ic-coral">🐛</span>Debugging broken code</span>
+      <span class="toggle-arrow">▶</span>
+    </button>
+    <div class="prompt-content">
+      <div class="prompt-meta">Always paste the exact error text AND your full script. Say what you expected and what happened instead. The error message is almost always the most important clue.</div>
+      <div class="prompt-label">Prompt to use</div>
+      <div class="prompt-box">I'm getting this error in Godot when I run my game:
+
+ERROR: Invalid get index 'velocity' on base 'Nil'.
+   at: _physics_process (res://player.gd:12)
+
+I expected the player to move when I press arrow keys, but the game crashes on startup instead.
+
+Here's my player.gd script:
+<span class="ph">[paste your entire script here]</span>
+
+What's causing this and how do I fix it?</div>
+      <button class="copy-btn" onclick="copyText(this)">📋 Copy prompt</button>
+      <div class="tip tip-amber" style="margin-top:12px;">
+        <div class="tip-head">Always copy the exact error text</div>
+        <div class="tip-body">From Godot's Output panel at the bottom of the editor. The red lines are errors. Select all the red text, copy it, and paste it into Claude exactly as-is. "It doesn't work" is much harder to debug than the actual error message.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <button class="prompt-toggle" onclick="togglePrompt(this)">
+      <span class="toggle-left"><span class="toggle-icon ic-purple">🧠</span>Understanding code Claude wrote</span>
+      <span class="toggle-arrow">▶</span>
+    </button>
+    <div class="prompt-content">
+      <div class="prompt-meta">Never copy-paste code you don't understand. This is how actual learning happens — not by collecting working code, but by understanding it well enough to write it yourself eventually.</div>
+      <div class="prompt-label">Prompt to use</div>
+      <div class="prompt-box">You just gave me this code and I have questions:
+
+<span class="ph">[paste the code Claude gave you]</span>
+
+Can you explain:
+1. What does "delta" mean and why do we multiply velocity by it?
+2. What does get_global_mouse_position() actually return?
+3. Why does look_at() point the sprite the right direction automatically?
+
+Explain it like I've never programmed before.</div>
+      <button class="copy-btn" onclick="copyText(this)">📋 Copy prompt</button>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <button class="prompt-toggle" onclick="togglePrompt(this)">
+      <span class="toggle-left"><span class="toggle-icon ic-blue">✨</span>Adding a new feature</span>
+      <span class="toggle-arrow">▶</span>
+    </button>
+    <div class="prompt-content">
+      <div class="prompt-meta">Always describe your current setup before asking for something new. This stops Claude from giving you code that conflicts with what you already built.</div>
+      <div class="prompt-label">Prompt to use</div>
+      <div class="prompt-box">I want to add a double-jump to my platformer. Here's what I already have:
+
+<span class="ph">[paste your current player.gd]</span>
+
+Right now the player jumps once with spacebar and can't jump again until landing.
+
+I want:
+- First jump works as normal
+- Pressing space again while in the air gives one extra jump
+- No more jumping after the second until landing
+- Maybe a small visual indicator when double-jump is available
+
+Can you modify my existing script to add this?</div>
+      <button class="copy-btn" onclick="copyText(this)">📋 Copy prompt</button>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <button class="prompt-toggle" onclick="togglePrompt(this)">
+      <span class="toggle-left"><span class="toggle-icon ic-amber">🎮</span>Game design help</span>
+      <span class="toggle-arrow">▶</span>
+    </button>
+    <div class="prompt-content">
+      <div class="prompt-meta">Claude isn't just for code — use it to brainstorm mechanics, balance difficulty, and design enemies before you build them. Thinking before building saves a lot of rework.</div>
+      <div class="prompt-label">Prompt to use</div>
+      <div class="prompt-box">I'm designing enemies for my dungeon game. I want 3 or 4 types that feel different to fight and that a beginner could actually code in Godot 4.
+
+My player has a sword that swings in an arc in front of them.
+
+For each enemy, describe:
+- What it looks like (simple shapes I can make without art skills)
+- How it moves and attacks
+- What makes it interesting to fight
+- How hard it is to code (beginner / medium / hard)
+
+Don't write any code yet — just help me think through the design first.</div>
+      <button class="copy-btn" onclick="copyText(this)">📋 Copy prompt</button>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <button class="prompt-toggle" onclick="togglePrompt(this)">
+      <span class="toggle-left"><span class="toggle-icon ic-green">📋</span>Step-by-step walkthroughs</span>
+      <span class="toggle-arrow">▶</span>
+    </button>
+    <div class="prompt-content">
+      <div class="prompt-meta">For learning something entirely new — audio, saving data, adding a HUD — ask for a walkthrough rather than just finished code. You'll understand what you built and know how to fix it when it breaks.</div>
+      <div class="prompt-label">Prompt to use</div>
+      <div class="prompt-box">I want to add sound effects to my Godot game. I've never done audio in Godot before.
+
+Walk me through the entire process from scratch:
+1. What node type do I use for sound?
+2. Where does it go in the scene tree?
+3. How do I import an audio file?
+4. How do I play a sound when the player jumps vs when they get hit?
+
+Go step by step and tell me exactly what to click in the Godot editor. I'm using Godot 4.</div>
+      <button class="copy-btn" onclick="copyText(this)">📋 Copy prompt</button>
+    </div>
+  </div>
+
+  <div class="tip" style="margin-top:18px;">
+    <div class="tip-head">Paste your scripts into the Project knowledge base</div>
+    <div class="tip-body">Inside your Claude Project, there's a section to add files or text. Paste your main game scripts there (player.gd, enemy.gd) so Claude always has them as context — you won't need to paste them into every single conversation.</div>
+  </div>
+</div>
+
+
+<!-- SECTION 04 -->
+<div class="section" id="godot">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>How Godot's interface works</h2>
+  </div>
+
+  <p style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:22px;">Godot looks complicated at first. It's not — it just has a lot of panels. Here's every part of the screen explained.</p>
+
+  <div class="godot-diagram">
+    <div class="godot-diagram-title">Godot 4 editor layout — labeled</div>
+    <div class="editor-mockup">
+      <div class="editor-titlebar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="editor-title">Godot Engine 4 — My Platformer</span>
+      </div>
+      <div class="editor-body">
+        <div class="ed-toolbar">
+          <button class="ed-tab active">2D</button>
+          <button class="ed-tab">3D</button>
+          <button class="ed-tab">Script</button>
+          <button class="ed-tab">AssetLib</button>
+          <span style="flex:1"></span>
+          <span style="font-size:11px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace;">▶  ■  ⏸</span>
+        </div>
+        <div class="ed-scene">
+          <div class="ed-section-label" style="color:var(--accent);">
+            <div class="panel-dot" style="background:var(--accent);"></div>
+            <span>Scene Tree [A]</span>
+          </div>
+          <div class="ed-node selected">📦 Player</div>
+          <div class="ed-node child">🎨 Sprite2D</div>
+          <div class="ed-node child">⬡ CollisionShape</div>
+          <div class="ed-node child">🔊 AudioPlayer</div>
+        </div>
+        <div class="ed-viewport">
+          <div class="ed-vp-grid"></div>
+          <div class="ed-player"></div>
+          <span style="position:absolute;top:10px;left:10px;font-size:10px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace;">[B] Viewport</span>
+        </div>
+        <div class="ed-inspector">
+          <div class="ed-section-label" style="color:var(--purple);">
+            <div class="panel-dot" style="background:var(--purple);"></div>
+            <span>Inspector [C]</span>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'JetBrains Mono',monospace;margin-bottom:6px;">Player (CharacterBody2D)</div>
+          <div class="ed-prop-row"><span class="ed-prop-name">Position</span><span class="ed-prop-val">540, 300</span></div>
+          <div class="ed-prop-row"><span class="ed-prop-name">Rotation</span><span class="ed-prop-val">0°</span></div>
+          <div class="ed-prop-row"><span class="ed-prop-name">Scale</span><span class="ed-prop-val">1, 1</span></div>
+          <div class="ed-prop-row"><span class="ed-prop-name">Visible</span><span class="ed-prop-val" style="color:var(--green);">true</span></div>
+        </div>
+        <div class="ed-filesystem">
+          <div class="ed-section-label" style="color:var(--amber);margin-bottom:6px;">
+            <div class="panel-dot" style="background:var(--amber);"></div>
+            <span>Filesystem [D]</span>
+          </div>
+          <div class="ed-file folder">📁 res://</div>
+          <div class="ed-file" style="margin-left:12px;">📄 player.gd</div>
+          <div class="ed-file" style="margin-left:12px;">🎬 player.tscn</div>
+          <div class="ed-file" style="margin-left:12px;">📄 enemy.gd</div>
+        </div>
+        <div class="ed-output">
+          <span style="color:rgba(255,255,255,.2);">[E] Output / Debugger</span><br>
+          <span class="ok">✓ Godot Engine v4.2 running</span><br>
+          <span class="ok">✓ Scene loaded: player.tscn</span><br>
+          <span class="err">ERROR: player.gd:12 — Unexpected token</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-grid">
+    <div class="callout-item">
+      <div class="callout-letter" style="background:var(--accent-dim);color:var(--accent);">A</div>
+      <div class="callout-text"><strong>Scene panel</strong> — your game's "family tree." Every object is a node. Nodes can have children inside them. Click a node to select it. Right-click to add children or delete.</div>
+    </div>
+    <div class="callout-item">
+      <div class="callout-letter" style="background:var(--blue-dim);color:var(--blue);">B</div>
+      <div class="callout-text"><strong>Viewport</strong> — the visual preview of your game. Drag objects here to position them. What you see is what the player sees when playing.</div>
+    </div>
+    <div class="callout-item">
+      <div class="callout-letter" style="background:var(--purple-dim);color:var(--purple);">C</div>
+      <div class="callout-text"><strong>Inspector</strong> — properties of the selected node: position, color, speed, size. Change most basic settings here without writing any code.</div>
+    </div>
+    <div class="callout-item">
+      <div class="callout-letter" style="background:var(--amber-dim);color:var(--amber);">D</div>
+      <div class="callout-text"><strong>Filesystem</strong> — all your project files: scripts (.gd), scenes (.tscn), images, audio. Like File Explorer but only for your game.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:10px;">
+    <div class="card-row">
+      <div class="card-icon ic-coral">📺</div>
+      <div class="card-content">
+        <div class="card-title">E — Output panel</div>
+        <div class="card-body">At the bottom of the screen. When your game crashes, the error appears here in red. This is the first place to look. Copy that red text and paste it directly into Claude. White text is normal output from your code's <code>print()</code> calls.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <h3>The three most important concepts in Godot</h3>
+
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num-wrap"><div class="step-circle">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Nodes — the building blocks of everything</div>
+        <div class="step-desc">Every object in Godot is a Node. <code>CharacterBody2D</code> is a physics body that can move. <code>Sprite2D</code> is an image. <code>CollisionShape2D</code> is an invisible hitbox. You combine nodes into a tree to build things. A "Player" is a CharacterBody2D with a Sprite2D and a CollisionShape2D as children inside it.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num-wrap"><div class="step-circle">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Scenes — reusable game objects</div>
+        <div class="step-desc">A Scene is a saved group of nodes. You make a Player scene once and drop it into any level. Make one Enemy scene, place it 20 times in your dungeon. Change the Enemy scene once — all 20 update automatically. Scenes are saved as <code>.tscn</code> files.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num-wrap"><div class="step-circle">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Scripts — code that controls a node</div>
+        <div class="step-desc">Scripts are <code>.gd</code> files you attach to nodes. Godot calls <code>_ready()</code> once when the scene loads, and <code>_process(delta)</code> sixty times per second. Everything your game does lives inside these functions and the custom ones you write.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip" style="margin-top:20px;">
+    <div class="tip-head">Right-click is your friend</div>
+    <div class="tip-body">Right-clicking on nodes, files, and the viewport shows a menu with the most useful actions. If you don't know what something does, right-click it first.</div>
+  </div>
+
+  <hr>
+  <h3>GDScript in 2 minutes</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:14px;line-height:1.6;">GDScript looks almost exactly like Python. Here's everything you need to know to get started:</p>
+  <div class="prompt-box">extends CharacterBody2D   <span style="color:var(--text3)"># this script belongs to a CharacterBody2D node</span>
+
+<span style="color:var(--text3)">## Variables — storing values</span>
+var speed = 200            <span style="color:var(--text3)"># create a variable called "speed"</span>
+var health = 3
+const JUMP = -400          <span style="color:var(--text3)"># const = never changes</span>
+
+<span style="color:var(--text3)">## _ready() runs ONCE when the scene first loads</span>
+func _ready():
+    print("Player is ready!")
+
+<span style="color:var(--text3)">## _process(delta) runs 60 TIMES PER SECOND</span>
+<span style="color:var(--text3)">## delta = tiny time since last frame (~0.016 seconds)</span>
+func _process(delta):
+    if Input.is_action_pressed("ui_right"):
+        position.x += speed * delta   <span style="color:var(--text3)"># move right, scaled to time</span>
+
+<span style="color:var(--text3)">## Functions — reusable blocks of code you write</span>
+func take_damage(amount):
+    health -= amount
+    if health &lt;= 0:
+        queue_free()   <span style="color:var(--text3)"># removes this node from the game</span></div>
+</div>
+
+
+<!-- SECTION 05 -->
+<div class="section" id="path">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Learning path</h2>
+  </div>
+
+  <p style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:22px;">Follow this in order. Each phase builds on the last. Don't skip to phase 3 — the basics in phase 1 are what make phase 3 fun instead of frustrating.</p>
+
+  <div class="path-grid">
+    <div class="path-card p1">
+      <div class="path-phase">Phase 1 — Weeks 1–4</div>
+      <div class="path-title">Get your footing</div>
+      <ul class="path-list">
+        <li>Python text game (number guessing, hangman)</li>
+        <li>Learn: variables, loops, if/else, functions</li>
+        <li>Open Godot — explore every panel</li>
+        <li>Move a colored rectangle with the keyboard</li>
+        <li>Understand nodes, scenes, scripts</li>
+      </ul>
+    </div>
+    <div class="path-card p2">
+      <div class="path-phase">Phase 2 — Weeks 5–10</div>
+      <div class="path-title">Finish a real game</div>
+      <ul class="path-list">
+        <li>Build Snake or Pong from scratch</li>
+        <li>Add collision, scoring, game over screen</li>
+        <li>Learn: signals, scene instancing, tilemaps</li>
+        <li>Add sound effects and basic UI</li>
+        <li>Export a playable .exe or web build</li>
+      </ul>
+    </div>
+    <div class="path-card p3">
+      <div class="path-phase">Phase 3 — Weeks 11+</div>
+      <div class="path-title">Make what you want</div>
+      <ul class="path-list">
+        <li>Pick a genre you love and build it</li>
+        <li>Add particles, lighting, screen shake</li>
+        <li>Publish to itch.io for others to play</li>
+        <li>Join a game jam (72-hour challenge)</li>
+        <li>Start learning shaders</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="banner banner-safety" style="margin-top:18px;">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">About game jams and online competitions</div>
+      <div class="banner-text">Game jams (like Ludum Dare, itch.io jams) are free to enter and a great challenge. Most are run through itch.io or public Discord servers. Read the rules carefully before entering. Most are very beginner-welcoming. If a jam asks for registration fees, payment info, or any personal details beyond a username — that's not normal. Check with your aunt before entering any that seem unusual.</div>
+    </div>
+  </div>
+
+  <div class="tip tip-amber" style="margin-top:10px;">
+    <div class="tip-head">The most important milestone</div>
+    <div class="tip-body">The moment everything clicks is when you finish your first complete game — even tiny. Pong or Snake, fully working, with a score and restart button. Finishing matters more than complexity. Every game developer has a "first finished game" story.</div>
+  </div>
+</div>
+
+
+<!-- SECTION 06 -->
+<div class="section" id="projects">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>First projects to build</h2>
+  </div>
+
+  <p style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:18px;">Build these in order. Each teaches something specific and prepares you for the next.</p>
+
+  <div class="proj-grid">
+    <div class="proj-card">
+      <span class="proj-emoji">🎲</span>
+      <div class="proj-name">Number guessing game</div>
+      <div class="proj-why">Pure Python, no engine needed. Computer picks a secret number, you guess, it says higher or lower. Finishable in one session.</div>
+      <div class="proj-skill">Teaches <span>variables</span><span>loops</span><span>input</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-emoji">🐍</span>
+      <div class="proj-name">Snake clone</div>
+      <div class="proj-why">Perfect first Godot game. Grid movement, growing snake, collision with walls and yourself. Well-documented everywhere.</div>
+      <div class="proj-skill">Teaches <span>2D movement</span><span>collision</span><span>score</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-emoji">🏓</span>
+      <div class="proj-name">Pong</div>
+      <div class="proj-why">Two paddles, bouncing ball, score. Teaches physics, velocity, keeping score, and two-player input. Everything you build after uses the same ideas.</div>
+      <div class="proj-skill">Teaches <span>physics</span><span>game loop</span><span>UI</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-emoji">🧱</span>
+      <div class="proj-name">Breakout</div>
+      <div class="proj-why">Ball breaks bricks. Adds level design, win/lose conditions, and making things feel satisfying to destroy.</div>
+      <div class="proj-skill">Teaches <span>tilemaps</span><span>win/lose</span><span>levels</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-emoji">🗡️</span>
+      <div class="proj-name">Top-down dungeon crawler</div>
+      <div class="proj-why">WASD movement, attacks, enemies that chase you. The "graduating" project — combines everything from the previous games. Take your time.</div>
+      <div class="proj-skill">Teaches <span>AI</span><span>animation</span><span>rooms</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-emoji">🏃</span>
+      <div class="proj-name">Platformer</div>
+      <div class="proj-why">Running, jumping, collecting things. The most-studied genre in game dev — endless tutorials and open source examples to learn from.</div>
+      <div class="proj-skill">Teaches <span>gravity</span><span>jumping</span><span>camera</span></div>
+    </div>
+  </div>
+
+  <div class="banner banner-safety" style="margin-top:18px;">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">Publishing your games on itch.io — what to know</div>
+      <div class="banner-text">itch.io is free to publish on and a very welcoming community. A few things to set up safely: use your alias, not your real name, as the developer name. Don't include personal info in game descriptions or credits. Set your game page visibility how you want before publishing. Uploading games is always free — <strong>you do not need to pay anything to publish.</strong></div>
+    </div>
+  </div>
+
+  <div class="banner banner-money" style="margin-top:10px;">
+    <div class="banner-icon">💵</div>
+    <div class="banner-body">
+      <div class="banner-title">Money check-in — itch.io seller accounts</div>
+      <div class="banner-text">Creating a free itch.io account and uploading games costs nothing. If you ever want to charge money for a game or receive payments, that requires a seller account with tax and banking info. Stop and talk to your aunt before setting any of that up — there's no rush, it's not needed while learning.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 07 -->
+<div class="section" id="resources">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Free learning resources</h2>
+  </div>
+
+  <a class="resource-link" href="https://gdquest.com" target="_blank">
+    <div class="rl-icon ic-teal">🎬</div>
+    <div class="rl-content">
+      <div class="rl-name">GDQuest</div>
+      <div class="rl-desc">Best Godot tutorial channel on YouTube. Start with their free browser-based "Learn GDScript" interactive course.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <a class="resource-link" href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html" target="_blank">
+    <div class="rl-icon ic-blue">📖</div>
+    <div class="rl-content">
+      <div class="rl-name">Godot official "Your first 2D game" tutorial</div>
+      <div class="rl-desc">Walks you through a complete dodging game step by step. About 2 hours. The best starting point inside Godot itself.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <a class="resource-link" href="https://kidscancode.org/godot_recipes/4.x/" target="_blank">
+    <div class="rl-icon ic-purple">🧪</div>
+    <div class="rl-content">
+      <div class="rl-name">KidsCanCode — Godot Recipes</div>
+      <div class="rl-desc">Short standalone how-tos: bullets, health, cameras, saving data. Use when you know what you want but not how to do it.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <a class="resource-link" href="https://kenney.nl/assets" target="_blank">
+    <div class="rl-icon ic-green">🎨</div>
+    <div class="rl-content">
+      <div class="rl-name">Kenney.nl — free game art</div>
+      <div class="rl-desc">Thousands of free sprites, tiles, and sound effects. All CC0 — no license required, no credit needed. The go-to for placeholder art while learning.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <a class="resource-link" href="https://itch.io" target="_blank">
+    <div class="rl-icon ic-coral">🕹️</div>
+    <div class="rl-content">
+      <div class="rl-name">itch.io — indie game marketplace</div>
+      <div class="rl-desc">Browse indie games, join game jams, and eventually publish your own. Free to browse and publish. Seeing what regular people built is great motivation.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <a class="resource-link" href="https://www.reddit.com/r/godot/" target="_blank">
+    <div class="rl-icon ic-amber">💬</div>
+    <div class="rl-content">
+      <div class="rl-name">r/godot on Reddit</div>
+      <div class="rl-desc">Friendly community for questions and showing progress. Very welcoming to beginners and early work-in-progress screenshots.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <a class="resource-link" href="https://claude.ai" target="_blank">
+    <div class="rl-icon ic-teal">✦</div>
+    <div class="rl-content">
+      <div class="rl-name">Claude (your aunt's account)</div>
+      <div class="rl-desc">Your AI coding partner. Create a Project per game, paste your code when asking questions, always ask Claude to explain what it wrote.</div>
+    </div>
+    <span class="rl-arrow">→</span>
+  </a>
+
+  <div class="banner banner-safety" style="margin-top:18px;">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-body">
+      <div class="banner-title">Online game dev communities — Discord in particular</div>
+      <div class="banner-text">There are great Godot and indie game dev Discord servers. Ground rules: use your alias, not your real name. Don't share your age, school, or location. Don't DM people you don't know. If anyone makes you uncomfortable, leave and report. The official Godot Discord and r/godot Reddit are your safest starting places.</div>
+    </div>
+  </div>
+
+  <div class="banner banner-money" style="margin-top:10px;">
+    <div class="banner-icon">💵</div>
+    <div class="banner-body">
+      <div class="banner-title">Money check-in — paid courses and premium assets</div>
+      <div class="banner-text">You'll see ads for paid Godot courses (Udemy, etc.) and premium asset packs constantly. <strong>You don't need any of them to start.</strong> Everything in this guide is free and more than enough for months of learning. If you find a specific paid course that looks genuinely great, bring it to your aunt first.</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">
+  <p>When in doubt about anything online — a download, a community, a purchase — check with your aunt first.</p>
+  <p style="margin-top:6px;">Godot Engine is free and open source forever. Claude Pro ($20/month) is on your aunt's account.</p>
+</div>
+
+</div>
+
+<script>
+function togglePrompt(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+function copyText(btn){
+  const box=btn.previousElementSibling;
+  navigator.clipboard.writeText(box.innerText).then(()=>{
+    btn.classList.add('copied');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>{btn.classList.remove('copied');btn.textContent='📋 Copy prompt';},2000);
+  });
+}
+</script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f84b070a817840fc95c36097d484160d"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
